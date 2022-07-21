@@ -13,10 +13,10 @@ Or download and type:
 
 ## Usage
 
-You can use the library to get UTC and local time sunrise and sunset times typing:
+You can use the library to get UTC sunrise and sunset times typing:
 
 ```python3
-import datetime
+import time
 from suntime import Sun, SunTimeException
 
 latitude = 51.21
@@ -27,25 +27,25 @@ sun = Sun(latitude, longitude)
 # Get today's sunrise and sunset in UTC
 today_sr = sun.get_sunrise_time()
 today_ss = sun.get_sunset_time()
-print('Today at Warsaw the sun raised at {} and get down at {} UTC'.
-      format(today_sr.strftime('%H:%M'), today_ss.strftime('%H:%M')))
+print('Today at Warsaw the sun raised at {}:{} and get down at {}:{} UTC'.
+      format(today_sr[3], today_sr[4], today_ss[3], today_ss[4]))
 
-# On a special date in your machine's local time zone
-abd = datetime.date(2014, 10, 3)
-abd_sr = sun.get_local_sunrise_time(abd)
-abd_ss = sun.get_local_sunset_time(abd)
-print('On {} the sun at Warsaw raised at {} and get down at {}.'.
-      format(abd, abd_sr.strftime('%H:%M'), abd_ss.strftime('%H:%M')))
+# On a special date
+abd = (2014, 10, 3, 10, 0, 0, 0, 0, -1)
+abd_sr = sun.get_sunrise_time(abd)
+abd_ss = sun.get_sunset_time(abd)
+print('On {}-{}-{} the sun at Warsaw raised at {}:{} and got down at {}:{}.'.
+      format(abd[0], abd[1], abd[2], abd_sr[3], abd_sr[4], abd_ss[3], abd_ss[4]))
 
 # Error handling (no sunset or sunrise on given location)
 latitude = 87.55
 longitude = 0.1
 sun = Sun(latitude, longitude)
 try:
-    abd_sr = sun.get_local_sunrise_time(abd)
-    abd_ss = sun.get_local_sunset_time(abd)
-    print('On {} at somewhere in the north the sun raised at {} and get down at {}.'.
-          format(abd, abd_sr.strftime('%H:%M'), abd_ss.strftime('%H:%M')))
+    abd_sr = sun.get_sunrise_time(abd)
+    abd_ss = sun.get_sunset_time(abd)
+    print('On {}-{}-{} at somewhere in the north the sun raised at {}:{} and got down at {}:{}.'.
+          format(abd[0], abd[1], abd[2], abd_sr[3], abd_sr[4], abd_ss[3], abd_ss[4]))
 except SunTimeException as e:
     print("Error: {0}.".format(e))
 ```
